@@ -1,8 +1,12 @@
 import { firebaseAuth } from '../config/firebaseConfig';
 
 // Sign Up
-export const doCreateUserWithEmailAndPassword = (email, password) =>
-  firebaseAuth.createUserWithEmailAndPassword(email, password);
+export const doCreateUserWithEmailAndPassword = (email, password) => {
+  console.log('creating account');
+  return firebaseAuth
+    .createUserWithEmailAndPassword(email, password)
+    .catch(error => console.log(error));
+};
 
 // Sign In
 export const doSignInWithEmailAndPassword = (email, password) =>

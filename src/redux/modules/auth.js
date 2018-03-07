@@ -1,5 +1,5 @@
-const AUTH_SET_USER_NAME = AUTH_UPDATE_USER_NAME;
-const AUTH_SET_EMAIL = AUTH_UPDATE_EMAIL;
+const AUTH_SET_USER_NAME = AUTH_SET_USER_NAME;
+const AUTH_SET_EMAIL = AUTH_SET_EMAIL;
 const AUTH_SET_NEW_PASSWORD = AUTH_SET_NEW_PASSWORD;
 const AUTH_ERROR = AUTH_ERROR;
 const AUTH_UPDATE_STATE = AUTH_UPDATE_STATE;
@@ -15,12 +15,15 @@ export const setUserName = userName => ({
   payload: userName
 });
 export const setEmail = userEmail => ({
-  type: AUTH_SET_USER_NAME,
+  type: AUTH_SET_EMAIL,
   payload: userEmail
 });
 export const setNewPassword = newPassword => ({
   type: AUTH_SET_NEW_PASSWORD,
   payload: newPassword
+});
+export const reset = () => ({
+  type: AUTH_RESET
 });
 
 export default function(
@@ -35,7 +38,22 @@ export default function(
   action
 ) {
   switch (action.type) {
-    case UPDATE_AUTH_STATE:
+    case AUTH_UPDATE_STATE:
       return { ...state, authenticated: action.payload };
+
+    case AUTH_SET_USER_NAME:
+      return { ...state, userName: action.payload };
+
+    case AUTH_SET_EMAIL:
+      console.log('setting email');
+      return { ...state, userEmail: action.payload };
+
+    case AUTH_SET_NEW_PASSWORD:
+      return { ...state, newPassword: action.payload };
+
+    case AUTH_RESET:
+      return { ...state, newPassword: '' };
+    default:
+      return state;
   }
 }

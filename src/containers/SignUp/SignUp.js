@@ -3,10 +3,6 @@ import { doCreateUserWithEmailAndPassword } from '../../helpers/auth';
 
 /* Adapted from : https://www.robinwieruch.de/complete-firebase-authentication-react-tutorial/#react-firebase-setup*/
 
-const byPropKey = (propertyName, value) => () => ({
-  [propertyName]: value
-});
-
 const INITIAL_STATE = {
   username: '',
   email: '',
@@ -15,26 +11,32 @@ const INITIAL_STATE = {
   error: null
 };
 
-class Login extends Component {
+const byPropKey = (propertyName, value) => () => ({
+  [propertyName]: value
+});
+
+class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      ...INITIAL_STATE
+      username: '',
+      email: '',
+      passwordOne: '',
+      passwordTwo: '',
+      error: null
     };
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  componentDidMount() {
-    this.setState({ ...INITIAL_STATE });
-  }
   handleSubmit(event) {
-    console.log('hello');
-    const { username, email, passwordOne } = this.state;
+    const { email, passwordOne } = this.state;
 
     doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
-        this.setState(() => ({ ...INITIAL_STATE }));
+        this.setState({ ...INITIAL_STATE });
       })
       .catch(error => {
+        console.log(error);
         this.setState(byPropKey('error', error));
       });
 
@@ -62,6 +64,7 @@ class Login extends Component {
           />
           <input
             value={email}
+            ref={email => (this.email = email)}
             onChange={event =>
               this.setState(byPropKey('email', event.target.value))
             }
@@ -70,6 +73,7 @@ class Login extends Component {
           />
           <input
             value={passwordOne}
+            ref={passwordOne => (this.passwordOne = passwordOne)}
             onChange={event =>
               this.setState(byPropKey('passwordOne', event.target.value))
             }
@@ -84,7 +88,7 @@ class Login extends Component {
             type="password"
             placeholder="Confirm Password"
           />
-          <button disabled={isInvalid} type="submit">
+          <button type="button" onClick={this.handleSubmit}>
             Sign Up
           </button>
 
@@ -95,4 +99,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default SignUp;
