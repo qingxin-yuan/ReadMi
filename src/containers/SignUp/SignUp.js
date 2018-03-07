@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { doCreateUserWithEmailAndPassword } from '../../helpers/auth';
+import {
+  doCreateUserWithEmailAndPassword,
+  createUserInDB
+} from '../../helpers/auth';
 
 /* Adapted from : https://www.robinwieruch.de/complete-firebase-authentication-react-tutorial/#react-firebase-setup*/
 
@@ -29,11 +32,17 @@ class SignUp extends Component {
   }
 
   handleSubmit(event) {
-    const { email, passwordOne } = this.state;
+    const { username, email, passwordOne } = this.state;
 
     doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
-        this.setState({ ...INITIAL_STATE });
+        createUserInDB(authUser.uid, username, email).then(() => {
+          this.setState({ ...INITIAL_STATE });
+          this.props.history.push('/login');
+        });
+      })
+      .catch(error => {
+        this.setState(byPropKey('error', error));
       })
       .catch(error => {
         console.log(error);
@@ -64,7 +73,6 @@ class SignUp extends Component {
           />
           <input
             value={email}
-            ref={email => (this.email = email)}
             onChange={event =>
               this.setState(byPropKey('email', event.target.value))
             }
@@ -73,7 +81,6 @@ class SignUp extends Component {
           />
           <input
             value={passwordOne}
-            ref={passwordOne => (this.passwordOne = passwordOne)}
             onChange={event =>
               this.setState(byPropKey('passwordOne', event.target.value))
             }
@@ -88,7 +95,11 @@ class SignUp extends Component {
             type="password"
             placeholder="Confirm Password"
           />
-          <button type="button" onClick={this.handleSubmit}>
+          <button
+            type="button"
+            disabled={isInvalid}
+            onClick={this.handleSubmit}
+          >
             Sign Up
           </button>
 
