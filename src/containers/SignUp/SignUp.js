@@ -3,6 +3,10 @@ import {
   doCreateUserWithEmailAndPassword,
   createUserInDB
 } from '../../helpers/auth';
+import { byPropKey } from '../../helpers/loginHelpers';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
+import style from './styles.js';
 
 /* Adapted from : https://www.robinwieruch.de/complete-firebase-authentication-react-tutorial/#react-firebase-setup*/
 
@@ -13,10 +17,6 @@ const INITIAL_STATE = {
   passwordTwo: '',
   error: null
 };
-
-const byPropKey = (propertyName, value) => () => ({
-  [propertyName]: value
-});
 
 class SignUp extends Component {
   constructor(props) {
@@ -36,13 +36,14 @@ class SignUp extends Component {
 
     doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
-        createUserInDB(authUser.uid, username, email).then(() => {
-          this.setState({ ...INITIAL_STATE });
-          this.props.history.push('/login');
-        });
-      })
-      .catch(error => {
-        this.setState(byPropKey('error', error));
+        createUserInDB(authUser.uid, username, email)
+          .then(() => {
+            this.setState({ ...INITIAL_STATE });
+            this.props.history.push('/login');
+          })
+          .catch(error => {
+            this.setState(byPropKey('error', error));
+          });
       })
       .catch(error => {
         console.log(error);
@@ -60,51 +61,69 @@ class SignUp extends Component {
       email === '' ||
       username === '';
     return (
-      <div>
-        <h1> Sign Up </h1>
-        <form onSubmit={this.handleSubmit}>
-          <input
-            value={username}
-            onChange={event =>
-              this.setState(byPropKey('username', event.target.value))
-            }
-            type="text"
-            placeholder="Full Name"
-          />
-          <input
-            value={email}
-            onChange={event =>
-              this.setState(byPropKey('email', event.target.value))
-            }
-            type="text"
-            placeholder="Email Address"
-          />
-          <input
-            value={passwordOne}
-            onChange={event =>
-              this.setState(byPropKey('passwordOne', event.target.value))
-            }
-            type="password"
-            placeholder="Password"
-          />
-          <input
-            value={passwordTwo}
-            onChange={event =>
-              this.setState(byPropKey('passwordTwo', event.target.value))
-            }
-            type="password"
-            placeholder="Confirm Password"
-          />
-          <button
-            type="button"
-            disabled={isInvalid}
-            onClick={this.handleSubmit}
-          >
-            Sign Up
-          </button>
-
-          {error && <p>{error.message}</p>}
-        </form>
+      <div style={style.loginForm}>
+        <div>
+          <div>
+            <h1> Sign Up </h1>
+          </div>
+          <form onSubmit={this.handleSubmit}>
+            <div>
+              <TextField
+                label="Email"
+                floatingLabelText="Email"
+                onChange={event =>
+                  this.setState(byPropKey('email', event.target.value))
+                }
+                value={email}
+                type="text"
+              />
+            </div>
+            <div>
+              <TextField
+                label="Name"
+                floatingLabelText="Name"
+                onChange={event =>
+                  this.setState(byPropKey('username', event.target.value))
+                }
+                value={username}
+                type="text"
+              />
+            </div>
+            <div>
+              <TextField
+                label="New Password"
+                floatingLabelText="New Password"
+                onChange={event =>
+                  this.setState(byPropKey('passwordOne', event.target.value))
+                }
+                value={passwordOne}
+                type="password"
+              />
+            </div>
+            <div>
+              <TextField
+                label="New Password"
+                floatingLabelText="Confirm Password"
+                onChange={event =>
+                  this.setState(byPropKey('passwordTwo', event.target.value))
+                }
+                value={passwordTwo}
+                type="password"
+              />
+            </div>
+            <div style={{ display: 'flex', marginTop: 50 }}>
+              <RaisedButton
+                type="submit"
+                primary
+                disabled={isInvalid}
+                onClick={this.handleSubmit}
+              >
+                Sign Up
+              </RaisedButton>
+            </div>
+            {error && <p>{error.message}</p>}
+          </form>
+        </div>
       </div>
     );
   }
