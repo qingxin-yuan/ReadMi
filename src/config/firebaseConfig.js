@@ -3,12 +3,12 @@ import 'firebase/auth';
 
 // Initialize firebase app
 const config = {
-  apiKey: 'AIzaSyCyRsOqFBBFOTCJTb2PKCeVFOPlD6OaAYc',
-  authDomain: 'coral-197417.firebaseapp.com',
-  databaseURL: 'https://coral-197417.firebaseio.com',
-  projectId: 'coral-197417',
-  storageBucket: '',
-  messagingSenderId: '179287576341'
+  apiKey: 'AIzaSyAsBcz5eVxGxzYQbSV8y9WOgIoguYzCQRA',
+  authDomain: 'readmi-6a6c4.firebaseapp.com',
+  databaseURL: 'https://readmi-6a6c4.firebaseio.com',
+  projectId: 'readmi-6a6c4',
+  storageBucket: 'readmi-6a6c4.appspot.com',
+  messagingSenderId: '259444831258'
 };
 
 const firebaseApp = firebase.initializeApp(config);
