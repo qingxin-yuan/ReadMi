@@ -21,7 +21,6 @@ class Login extends Component {
     doSignInWithEmailAndPassword(email, password)
       .then(() => {
         console.log('logged in');
-        console.log(this.props);
         this.props.history.push('./signup');
       })
       .catch(error => {
@@ -31,7 +30,7 @@ class Login extends Component {
   }
 
   render() {
-    const { username, email, password, error } = this.state;
+    const { email, password, error } = this.state;
     const isInvalid = password === '' || email === '';
     return (
       <div>

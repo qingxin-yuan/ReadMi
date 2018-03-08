@@ -1,10 +1,5 @@
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import {
-  blueGrey900,
-  white,
-  redA200,
-  greenA200
-} from 'material-ui/styles/colors';
+import { blueGrey900, redA200, greenA200 } from 'material-ui/styles/colors';
 
 export default getMuiTheme({
   palette: {
