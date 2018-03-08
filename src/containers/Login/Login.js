@@ -21,7 +21,7 @@ class Login extends Component {
     doSignInWithEmailAndPassword(email, password)
       .then(() => {
         console.log('logged in');
-        this.props.history.push('./signup');
+        this.props.history.push('/');
       })
       .catch(error => {
         this.setState(byPropKey('error', error));
