@@ -6,6 +6,7 @@ import muiTheme from './config/theme';
 import ReactDOM from 'react-dom';
 import Login from './containers/Login/';
 import SignUp from './containers/SignUp/';
+import Mi from './containers/Mi/';
 import { Provider } from 'react-redux';
 import { updateAuthState, userLoading } from './redux/modules/auth';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
@@ -38,8 +39,8 @@ const App = () => (
         <Router>
           <div>
             <Switch>
-              <Route exact path="/" component={Login} />
               <Route exact path="/login" component={Login} />
+              <PrivateRoute exact path="/" component={Mi} />
               <PrivateRoute exact path="/signup" component={SignUp} />
             </Switch>
           </div>
