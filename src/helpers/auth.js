@@ -10,10 +10,13 @@ export const doCreateUserWithEmailAndPassword = (email, password) => {
 
 // Write to user db
 export const createUserInDB = (userId, userName, email) => {
-  firebaseDB.ref(`users/${userId}`).set({
-    userName,
-    email
-  });
+  return firebaseDB
+    .ref(`users/${userId}`)
+    .set({
+      userName,
+      email
+    })
+    .catch(error => console.log(error));
 };
 
 // Sign In
