@@ -16,11 +16,20 @@ export default class Login extends Component {
   }
 
   handleSubmit(event) {
-    console.log('logged in');
+    const { email, password } = this.state;
+    doSignInWithEmailAndPassword(email, password)
+      .then(() => {
+        console.log('logged in');
+      })
+      .catch(error => {
+        this.setState(byPropKey('error', error));
+      });
+    event.preventDefault();
   }
 
   render() {
     const { username, email, password, error } = this.state;
+    const isInvalid = password === '' || email === '';
     return (
       <div>
         <div>
@@ -50,7 +59,12 @@ export default class Login extends Component {
             />
           </div>
           <div style={{ display: 'flex', marginTop: 50 }}>
-            <RaisedButton type="button" primary onClick={this.handleSubmit}>
+            <RaisedButton
+              type="button"
+              primary
+              disabled={isInvalid}
+              onClick={this.handleSubmit}
+            >
               Log In
             </RaisedButton>
           </div>
