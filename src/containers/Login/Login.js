@@ -3,8 +3,9 @@ import { doSignInWithEmailAndPassword } from '../../helpers/auth';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import { byPropKey } from '../../helpers/loginHelpers';
+import { withRouter } from 'react-router-dom';
 
-export default class Login extends Component {
+class Login extends Component {
   constructor() {
     super();
     this.state = {
@@ -20,6 +21,8 @@ export default class Login extends Component {
     doSignInWithEmailAndPassword(email, password)
       .then(() => {
         console.log('logged in');
+        console.log(this.props);
+        this.props.history.push('./signup');
       })
       .catch(error => {
         this.setState(byPropKey('error', error));
@@ -74,3 +77,5 @@ export default class Login extends Component {
     );
   }
 }
+
+export default withRouter(Login);
