@@ -39,7 +39,7 @@ class SignUp extends Component {
         createUserInDB(authUser.uid, username, email)
           .then(() => {
             this.setState({ ...INITIAL_STATE });
-            this.props.history.push('/login');
+            this.props.history.push('/');
           })
           .catch(error => {
             this.setState(byPropKey('error', error));
