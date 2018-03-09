@@ -8,13 +8,21 @@ class Downloads extends Component {
       downloads: {}
     };
   }
-  render() {
+  componentDidMount() {
     const { uid } = this.props;
-    firebaseDB.ref(`downloads/${uid}`).on('value', snapshot => {
-      //console.log(snapshot.val());
+    // firebaseDB.ref(`downloads/${uid}`).on('value', snapshot => {
+    //   console.log(snapshot.val());
+    //   this.setState({ downloads: snapshot.val() });
+    // });
+
+    firebaseDB.ref(`downloads/${uid}`).once('value', snapshot => {
+      console.log(snapshot.val());
       this.setState({ downloads: snapshot.val() });
     });
-    console.log(this.state.downloads);
+  }
+  render() {
+    console.log('fresh');
+    //console.log(this.state.downloads);
     return <div>DOWNLOADS </div>;
   }
 }

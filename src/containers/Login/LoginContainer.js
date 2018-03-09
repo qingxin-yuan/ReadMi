@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 class LoginContainer extends Component {
   render() {
     const { from } = this.props.location.state || {
-      from: { pathname: '/items' }
+      from: { pathname: '/' }
     };
     return !this.props.authenticated ? <Login /> : <Redirect to={from} />;
   }
