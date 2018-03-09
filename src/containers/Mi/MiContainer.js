@@ -13,63 +13,32 @@ class MiContainer extends Component {
       currentUserName: "",
       mis: {}
     };
-    this.getCurrentUserName = this.getCurrentUserName.bind(this);
-    this.getAllUsersName = this.getAllUsersName.bind(this);
+
     this.getAllMis = this.getAllMis.bind(this);
   }
 
-  // method to query db for current user ID
-  async getCurrentUserName() {
-    const uid = this.props.uid;
-    let currentUserName = "";
-    const ref = await firebaseDB.ref(`users/${uid}`);
-
-    ref.once("value", snapshot => {
-      if (snapshot.val()) {
-        // console.log(snapshot.val());
-        this.setState({ currentUserName: snapshot.val().userName });
-      }
-    });
-    return true;
-  }
-
-  async getAllUsersName() {
-    // const uid = this.props.uid;
-    // let currentUserName = "";
-    const ref = await firebaseDB.ref(`users/`);
-
-    ref.on("value", snapshot => {
-      if (snapshot.val()) {
-        const users = snapshot.val();
-        this.setState({ mis: snapshot.val() });
-        // Object.entries(users).forEach(([id, name])=>console.log(id, name))
-      }
-    });
-  }
-
   async getAllMis() {
-    // const uid = this.props.uid;
-    // let currentUserName = "";
     const ref = await firebaseDB.ref(`mi/`);
-
     ref.on("value", snapshot => {
-      if (snapshot.val()) {
+      // if (snapshot.val()) {
         const mis = snapshot.val();
         this.setState({ mis });
-      }
+      // }
     });
   }
-  componentDidMount(){
+
+  componentDidMount() {
     this.getAllMis();
   }
+
   render() {
-    // console.log(this.state.mis);
+    console.log(this.state.mis);
     return (
       <div>
-          {Object.entries(this.state.mis).map((miByUser, index) => {
-            console.log(miByUser);
-            return <Mi key={index} mis={miByUser} />;
-          })}
+        {Object.entries(this.state.mis).map((miByUser, index) => {
+          // console.log(miByUser);
+          return <Mi key={index} mis={miByUser} />;
+        })}
       </div>
     );
   }

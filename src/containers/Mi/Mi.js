@@ -2,7 +2,7 @@ import React, { Component } from "react";
 // import Mi from './Mi';
 
 const Mi = ({ mis }) => {
-  console.log(mis);
+  // console.log(mis);
 
   return (
     <div style={{ color: "black" }}>
