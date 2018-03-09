@@ -10,16 +10,7 @@ async function getAllUsersName() {
   });
 }
 
-// method to query db for current user ID
-// @params: currentUserId from firebaseAuth
-async function getCurrentUserName(uid) {
-  const ref = await firebaseDB.ref(`users/${uid}`);
-
-  ref.on("value", snapshot => {
-    return snapshot.val();
-  });
-  return true;
-}
 
 
-export { getAllUsersName, getCurrentUserName};
+
+export { getAllUsersName };
