@@ -59,28 +59,17 @@ class MiContainer extends Component {
       }
     });
   }
-
+  componentDidMount(){
+    this.getAllMis();
+  }
   render() {
-    console.log(this.state.mis);
+    // console.log(this.state.mis);
     return (
       <div>
-        <RaisedButton
-          type="button"
-          primary
-          // disabled={isInvalid}
-          onClick={this.getAllMis}
-        >
-          Show me what you goooot!
-        </RaisedButton>
-        {/* <Mi /> */}
-        <div>
-          {Object.entries(this.state.mis).map((miByUser, i) => {
+          {Object.entries(this.state.mis).map((miByUser, index) => {
             console.log(miByUser);
-            return <Mi key={i} mis={miByUser} />;
+            return <Mi key={index} mis={miByUser} />;
           })}
-        </div>
-        {/* <Mi mis={this.state.mis}/> */}
-        {/* {currentUser && <p>{`${currentUser}`}</p>} */}
       </div>
     );
   }
