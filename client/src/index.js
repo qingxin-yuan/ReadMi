@@ -7,6 +7,7 @@ import ReactDOM from 'react-dom';
 import Login from './containers/Login/';
 import SignUp from './containers/SignUp/';
 import Mi from './containers/Mi/';
+import Downloads from './containers/Downloads/';
 import { Provider } from 'react-redux';
 import { updateAuthState, userLoading } from './redux/modules/auth';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
@@ -42,6 +43,7 @@ const App = () => (
               <Route exact path="/login" component={Login} />
               <Route exact path="/signup" component={SignUp} />
               <PrivateRoute exact path="/" component={Mi} />
+              <PrivateRoute exact path="/downloads" component={Downloads} />
             </Switch>
           </div>
         </Router>
