@@ -1,28 +1,16 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import firebase from "firebase";
+// import Mi from './Mi';
 
-import { firebaseDB } from "../../config/firebaseConfig";
+const Mi = ( {mis} ) => {
+  console.log(mis);
 
-class Mi extends Component {
-  async getUserName() {
-    // const uid = await firebaseAuth.currentUser;
-    const uid = this.props.uid;
-    const ref = await firebaseDB.ref(`users/${uid}`);
-    // console.log(ref);
-    ref.on("value", snapshot => console.log(snapshot.val() &&snapshot.val().userName));
-
-  }
-
-  render() {
-    // console.log(this.props.uid);
-    this.getUserName();
-    return <div>so many Mis...</div>;
-  }
-}
-
-const mapStateToProps = state => ({
-  uid: state.auth.authenticated.uid
-});
-
-export default connect(mapStateToProps)(Mi);
+  return (
+    <div style={{ color: "black" }}>
+      <p>{mis[0]}</p>
+      <ul>
+      {mis[1].map((link, i)=> <li key={i}>{link}</li>)}
+      </ul>
+    </div>
+  );
+};
+export default Mi;
