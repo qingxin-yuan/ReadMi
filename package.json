@@ -1,14 +1,15 @@
-{ 
+{
   "name": "server",
   "version": "0.1.0",
   "private": true,
   "main": "index.js",
   "dependencies": {
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "moment": "^2.21.0"
   },
-  "scripts":{
+  "scripts": {
     "start": "node server/index.js",
-    "start:dev":"NODE_ENV='development' concurrently 'yarn start' 'cd client && yarn start:react'",
+    "start:dev": "NODE_ENV='development' concurrently 'yarn start' 'cd client && yarn start:react'",
     "build:react": "cd client && yarn build:react"
   }
 }

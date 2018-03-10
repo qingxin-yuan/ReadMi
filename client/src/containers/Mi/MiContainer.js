@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import firebase from "firebase";
+// import moment from 'moment';
 import RaisedButton from "material-ui/RaisedButton";
 
 import Mi from "./Mi";
@@ -15,7 +16,7 @@ class MiContainer extends Component {
     };
 
     this.getAllMis = this.getAllMis.bind(this);
-    this.addMi = this.addMi.bind(this);
+    this.upsertMi = this.upsertMi.bind(this);
   }
 
   async getAllMis() {
@@ -40,10 +41,29 @@ class MiContainer extends Component {
     });
   }
 
-  async addMi(userName, link) {
+  // method to update or insert links into db
+  //@params: userName of the current user(string), link(string)
+  async upsertMi(userName, link) {
     const ref = await firebaseDB.ref(`mi/`);
+    let existed = false;
     const date = new Date();
-    ref.update({ [userName]: { [date]: link } });
+    ref.child(userName).once("value", snapshot => {
+      console.log(snapshot.val())
+      if (snapshot.val()) {
+
+        existed = true;
+      }
+    });
+    console.log(existed);
+    if (existed) {
+      ref.child(userName).update({ [date]: link });
+
+      return;
+    } else {
+      ref.update({ [userName]: { [date]: link } });
+
+      return;
+    }
   }
 
   componentDidMount() {
@@ -59,13 +79,10 @@ class MiContainer extends Component {
 
     return (
       <div>
-        <RaisedButton
-          onClick={() => this.addMi(this.state.currentUserName, "update")}
-        >
+        <RaisedButton onClick={() => this.upsertMi(this.state.currentUserName, "!!")}>
           click me
         </RaisedButton>
         {Object.entries(this.state.mis).map((miByUser, index) => {
-          // console.log(miByUser);
           return <Mi key={index} mis={miByUser} />;
         })}
       </div>
