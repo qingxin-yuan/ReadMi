@@ -8,6 +8,7 @@ import Login from './containers/Login/';
 import SignUp from './containers/SignUp/';
 import Mi from './containers/Mi/';
 import Downloads from './containers/Downloads/';
+import Profile from './containers/Profile/';
 import { Provider } from 'react-redux';
 import { updateAuthState, userLoading } from './redux/modules/auth';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
@@ -44,6 +45,7 @@ const App = () => (
               <Route exact path="/signup" component={SignUp} />
               <PrivateRoute exact path="/" component={Mi} />
               <PrivateRoute exact path="/downloads" component={Downloads} />
+              <PrivateRoute exact path="/profile/:username" component={Profile} />
             </Switch>
           </div>
         </Router>

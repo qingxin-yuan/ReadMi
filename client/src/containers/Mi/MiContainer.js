@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import firebase from "firebase";
+import {withRouter} from 'react-router';
+// import firebase from "firebase";
 // import moment from 'moment';
 import RaisedButton from "material-ui/RaisedButton";
 
@@ -20,9 +21,10 @@ class MiContainer extends Component {
   }
 
   async getAllMis() {
-    const ref = await firebaseDB.ref(`mi/`);
+    const ref = await firebaseDB.ref(`mi`);
     ref.on("value", snapshot => {
       // if (snapshot.val()) {
+        console.log(snapshot.val())
       const mis = snapshot.val();
       this.setState({ mis });
       // }
@@ -41,29 +43,14 @@ class MiContainer extends Component {
     });
   }
 
-  // method to update or insert links into db
+ 
+
+  // method to update or insert links into db, data arranged by time posted
   //@params: userName of the current user(string), link(string)
-  async upsertMi(userName, link) {
-    const ref = await firebaseDB.ref(`mi/`);
-    let existed = false;
+  async upsertMi(userName, link){
     const date = new Date();
-    ref.child(userName).once("value", snapshot => {
-      console.log(snapshot.val())
-      if (snapshot.val()) {
-
-        existed = true;
-      }
-    });
-    console.log(existed);
-    if (existed) {
-      ref.child(userName).update({ [date]: link });
-
-      return;
-    } else {
-      ref.update({ [userName]: { [date]: link } });
-
-      return;
-    }
+    const ref = await firebaseDB.ref('mi/');
+    ref.update({[date]: {userName, link}});
   }
 
   componentDidMount() {
@@ -94,4 +81,4 @@ const mapStateToProps = state => ({
   uid: state.auth.authenticated.uid
 });
 
-export default connect(mapStateToProps)(MiContainer);
+export default connect(mapStateToProps)(withRouter(MiContainer));
