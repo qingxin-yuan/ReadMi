@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import firebase from "firebase";
+import {withRouter} from 'react-router';
+// import firebase from "firebase";
 // import moment from 'moment';
 import RaisedButton from "material-ui/RaisedButton";
 
 import Mi from "./Mi";
-import { firebaseDB } from "../../config/firebaseConfig";
+import { firebaseDB, firebaseAuth } from "../../config/firebaseConfig";
 
 class MiContainer extends Component {
   constructor() {
@@ -20,9 +21,10 @@ class MiContainer extends Component {
   }
 
   async getAllMis() {
-    const ref = await firebaseDB.ref(`mi/`);
+    const ref = await firebaseDB.ref(`mi`);
     ref.on("value", snapshot => {
       // if (snapshot.val()) {
+        // console.log(snapshot.val())
       const mis = snapshot.val();
       this.setState({ mis });
       // }
@@ -41,45 +43,36 @@ class MiContainer extends Component {
     });
   }
 
-  // method to update or insert links into db
+ 
+
+  // method to update or insert links into db, data arranged by time posted
   //@params: userName of the current user(string), link(string)
-  async upsertMi(userName, link) {
-    const ref = await firebaseDB.ref(`mi/`);
-    let existed = false;
+  async upsertMi(userName, link){
     const date = new Date();
-    ref.child(userName).once("value", snapshot => {
-      console.log(snapshot.val())
-      if (snapshot.val()) {
-
-        existed = true;
-      }
-    });
-    console.log(existed);
-    if (existed) {
-      ref.child(userName).update({ [date]: link });
-
-      return;
-    } else {
-      ref.update({ [userName]: { [date]: link } });
-
-      return;
-    }
+    const ref = await firebaseDB.ref('mi/');
+    ref.update({[date]: {userName, link}});
   }
 
   componentDidMount() {
+    
+    firebaseAuth.currentUser && this.getCurrentUserName(firebaseAuth.currentUser.uid)
     this.getAllMis();
   }
 
-  componentWillReceiveProps({ uid }) {
-    this.getCurrentUserName(uid);
-  }
+  // componentWillReceiveProps({ uid }) {
+  //   this.getCurrentUserName(uid);
+  // }
 
   render() {
-    console.log(this.state.currentUserName);
+    console.log(firebaseAuth.currentUser);
+    // console.log(this.state.currentUserName);
 
     return (
       <div>
-        <RaisedButton onClick={() => this.upsertMi(this.state.currentUserName, "!!")}>
+        <RaisedButton onClick={() => {
+          
+          this.upsertMi(this.state.currentUserName, "!!")
+          }}>
           click me
         </RaisedButton>
         {Object.entries(this.state.mis).map((miByUser, index) => {
@@ -94,4 +87,4 @@ const mapStateToProps = state => ({
   uid: state.auth.authenticated.uid
 });
 
-export default connect(mapStateToProps)(MiContainer);
+export default connect(mapStateToProps)(withRouter(MiContainer));
