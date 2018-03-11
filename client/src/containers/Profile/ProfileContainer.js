@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 // import { connect } from "react-redux";
-import {withRouter} from 'react-router'
+import { withRouter } from "react-router";
 
 import Profile from "./Profile";
 import { firebaseDB } from "../../config/firebaseConfig";
@@ -10,13 +10,13 @@ class ProfileContainer extends Component {
     super();
     this.state = {
       mis: {},
-      userName: '',
+      userName: ""
     };
     this.fetchProfileMis = this.fetchProfileMis.bind(this);
   }
 
   async fetchProfileMis(userName) {
-    console.log(userName);
+    // console.log(userName);
     const ref = firebaseDB.ref("mi/");
     ref
       .orderByChild("userName")
@@ -25,23 +25,23 @@ class ProfileContainer extends Component {
         this.setState({ mis: snapshot.val() });
       });
   }
-  componentWillReceiveProps(props){
-    const userName = props.match.params.username;
-    this.setState({userName});
-    this.fetchProfileMis(this.state.userName);
+  componentDidMount() {
+    const userName = this.props.match.params.username;
+    // console.log(userName);
+    // this.setState({userName});
+    this.fetchProfileMis(userName);
   }
 
   render() {
+    console.log(this.state.mis);
     return (
       <div>
-        {this.state.mis && Object.entries(this.state.mis).map((miByUser, index) => {
+        {Object.entries(this.state.mis).map((miByUser, index) => {
           return <Profile key={index} mis={miByUser} />;
         })}
       </div>
     );
   }
 }
-
-
 
 export default withRouter(ProfileContainer);

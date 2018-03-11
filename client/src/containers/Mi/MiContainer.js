@@ -6,7 +6,7 @@ import {withRouter} from 'react-router';
 import RaisedButton from "material-ui/RaisedButton";
 
 import Mi from "./Mi";
-import { firebaseDB } from "../../config/firebaseConfig";
+import { firebaseDB, firebaseAuth } from "../../config/firebaseConfig";
 
 class MiContainer extends Component {
   constructor() {
@@ -24,7 +24,7 @@ class MiContainer extends Component {
     const ref = await firebaseDB.ref(`mi`);
     ref.on("value", snapshot => {
       // if (snapshot.val()) {
-        console.log(snapshot.val())
+        // console.log(snapshot.val())
       const mis = snapshot.val();
       this.setState({ mis });
       // }
@@ -54,19 +54,25 @@ class MiContainer extends Component {
   }
 
   componentDidMount() {
+    
+    firebaseAuth.currentUser && this.getCurrentUserName(firebaseAuth.currentUser.uid)
     this.getAllMis();
   }
 
-  componentWillReceiveProps({ uid }) {
-    this.getCurrentUserName(uid);
-  }
+  // componentWillReceiveProps({ uid }) {
+  //   this.getCurrentUserName(uid);
+  // }
 
   render() {
-    console.log(this.state.currentUserName);
+    console.log(firebaseAuth.currentUser);
+    // console.log(this.state.currentUserName);
 
     return (
       <div>
-        <RaisedButton onClick={() => this.upsertMi(this.state.currentUserName, "!!")}>
+        <RaisedButton onClick={() => {
+          
+          this.upsertMi(this.state.currentUserName, "!!")
+          }}>
           click me
         </RaisedButton>
         {Object.entries(this.state.mis).map((miByUser, index) => {

@@ -6,7 +6,7 @@ const Mi = ({ mis }) => {
   // console.log(mis);
 
   const {link, userName} = mis[1];
-  console.log(link, userName);
+  // console.log(link, userName);
   return (
     <div style={{ color: "black" }}>
       <p>{mis[0]}</p>
