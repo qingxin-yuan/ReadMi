@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { firebaseAuth, firebaseDB } from '../../config/firebaseConfig';
+import Download from './Download';
+import { Card, CardText, CardHeader } from 'material-ui/Card';
+import styles from './styles';
 
 class Downloads extends Component {
   constructor() {
@@ -7,6 +10,7 @@ class Downloads extends Component {
     this.state = {
       downloads: {}
     };
+    this.getDownloads = this.getDownloads.bind(this);
   }
 
   async getDownloads(uid) {
@@ -15,19 +19,39 @@ class Downloads extends Component {
       this.setState({ downloads: snapshot.val() });
     });
   }
-  componentDidMount() {
-    const { uid } = this.props;
-    // firebaseDB.ref(`downloads/${uid}`).on('value', snapshot => {
-    //   console.log(snapshot.val());
-    //   this.setState({ downloads: snapshot.val() });
-    // });
-    console.log(uid);
-    this.getDownloads(uid);
+  async componentWillReceiveProps(uid) {
+    await this.getDownloads(uid.uid);
   }
   render() {
-    console.log('fresh');
-    //console.log(this.state.downloads);
-    return <div>DOWNLOADS </div>;
+    const { downloads } = this.state;
+    const downloadArray = Object.values(downloads);
+    return (
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          flexDirection: 'column',
+          alignItems: 'center',
+          marginTop: 100
+        }}
+      >
+        <div>
+          <Card style={styles.card}>
+            <CardHeader
+              title="Downloaded"
+              style={{ margin: 'auto', width: '50%' }}
+            />
+            <CardText>
+              <ul style={{ listStyleType: 'none' }}>
+                {downloadArray.map((download, i) => (
+                  <Download key={i} url={download} />
+                ))}
+              </ul>
+            </CardText>
+          </Card>
+        </div>
+      </div>
+    );
   }
 }
 
